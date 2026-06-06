@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechyHub - Order Tracking</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/script.js"></script>
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="images/techhublogo.jpg" alt="TechyHub Logo" style="height:38px;width:38px;object-fit:contain;border-radius:8px;vertical-align:middle;margin-right:8px;">TechyHub
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="tracking.html" class="active">Tracking</a></li>
+            <li><a href="wishlist.html">Wishlist ❤️</a></li>
+            <li><a href="cart.html">Cart 🛒 <span id="cartCount" style="background:red;color:white;border-radius:50%;padding:2px 7px;font-size:12px;">0</span></a></li>
+        </ul>
+        <div class="nav-auth">
+            <a href="profile.html" class="nav-profile-btn">👤 Profile</a>
+            <a href="login.html" class="nav-login-btn">Login</a>
+        </div>
+        <button id="darkModeBtn" onclick="toggleDarkMode()">🌙</button>
+    </nav>
+</header>
+
+<section class="tracking-page">
+
+    <h1>🚚 Order Tracking</h1>
+    <p>Enter the Order ID you received after checkout to track your order.</p>
+
+    <div class="tracking-form">
+        <input
+            type="text"
+            id="trackingNumber"
+            placeholder="Enter Order ID (e.g. ORD-1234567890)"
+        >
+        <button onclick="trackOrder()">Track Order</button>
+    </div>
+
+    <div id="trackingResult"></div>
+
+    <!-- Past orders pulled from localStorage -->
+    <div id="myOrdersSection" style="margin-top:40px;display:none;">
+        <h3>🧾 Your Recent Orders</h3>
+        <table class="sku-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product(s)</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="myOrdersBody"></tbody>
+        </table>
+    </div>
+
+</section>
+
+<footer>
+    <p>© 2026 TechyHub. All Rights Reserved.</p>
+</footer>
+
+<button id="topBtn" onclick="scrollToTop()">↑</button>
+
+<script>
+// Load and display the user's past orders from localStorage
+function loadMyOrders() {
+    const orders = JSON.parse(localStorage.getItem("TechyHubOrders")) || [];
+    if (orders.length === 0) return;
+
+    const section = document.getElementById("myOrdersSection");
+    const tbody   = document.getElementById("myOrdersBody");
+    section.style.display = "block";
+
+    tbody.innerHTML = [...orders].reverse().map(o => {
+        const productList = o.items.map(i => i.name).join(", ");
+        const status      = o.status || "Processing 📦";
+        return `
+            <tr>
+                <td><strong>${o.id}</strong></td>
+                <td>${productList}</td>
+                <td>${status}</td>
+                <td>
+                    <button onclick="quickTrack('${o.id}')" style="
+                        background:#3b82f6;color:white;border:none;
+                        padding:5px 12px;border-radius:6px;cursor:pointer;
+                        font-weight:600;font-size:0.8rem;">
+                        Track
+                    </button>
+                </td>
+            </tr>`;
+    }).join("");
+}
+
+function quickTrack(id) {
+    document.getElementById("trackingNumber").value = id;
+    trackOrder();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// Allow Enter key
+document.getElementById("trackingNumber").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") trackOrder();
+});
+
+// On load — show recent orders table
+window.addEventListener("DOMContentLoaded", loadMyOrders);
+</script>
+
+</body>
+</html>

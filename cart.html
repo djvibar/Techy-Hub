@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechyHub - Shopping Cart</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/script.js"></script>
+    <style>
+        /* ── Checkout Modal Overlay ── */
+        #checkoutModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .checkout-modal-box {
+            background: #fff;
+            border-radius: 14px;
+            padding: 32px 28px;
+            width: 94%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        body.dark-mode .checkout-modal-box {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+        .checkout-modal-box h2 {
+            margin-bottom: 6px;
+            font-size: 1.2rem;
+        }
+        .checkout-modal-box p.subtitle {
+            color: #64748b;
+            font-size: 0.83rem;
+            margin-bottom: 20px;
+        }
+        .co-group {
+            margin-bottom: 14px;
+        }
+        .co-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #374151;
+        }
+        body.dark-mode .co-group label { color: #94a3b8; }
+        .co-group input,
+        .co-group textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 0.88rem;
+            outline: none;
+            transition: border 0.2s;
+            box-sizing: border-box;
+            background: #f9fafb;
+        }
+        body.dark-mode .co-group input,
+        body.dark-mode .co-group textarea {
+            background: #0f172a;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+        .co-group input:focus,
+        .co-group textarea:focus {
+            border-color: #3b82f6;
+        }
+        .co-row {
+            display: flex;
+            gap: 12px;
+        }
+        .co-row .co-group { flex: 1; }
+        .co-section-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6b7280;
+            margin: 18px 0 10px;
+        }
+        .co-btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+        }
+        .co-btn-confirm {
+            flex: 1;
+            padding: 11px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        .co-btn-confirm:hover { background: #2563eb; }
+        .co-btn-cancel {
+            padding: 11px 18px;
+            background: #f3f4f6;
+            color: #374151;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        body.dark-mode .co-btn-cancel { background: #334155; color: #e2e8f0; }
+        .co-btn-cancel:hover { background: #e5e7eb; }
+        .co-close-x {
+            position: absolute;
+            top: 14px; right: 16px;
+            background: none; border: none;
+            font-size: 1.3rem; cursor: pointer;
+            color: #9ca3af;
+        }
+        .required-note {
+            font-size: 0.75rem;
+            color: #ef4444;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="images/techhublogo.jpg" alt="TechyHub Logo" style="height:38px;width:38px;object-fit:contain;border-radius:8px;vertical-align:middle;margin-right:8px;">TechyHub
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="wishlist.html">Wishlist ❤️</a></li>
+            <li><a href="cart.html" class="active">Cart 🛒 <span id="cartCount" style="background:red;color:white;border-radius:50%;padding:2px 7px;font-size:12px;">0</span></a></li>
+        </ul>
+        <div class="nav-auth">
+            <a href="profile.html" class="nav-profile-btn">👤 Profile</a>
+            <a href="login.html" class="nav-login-btn">Login</a>
+        </div>
+        <button id="darkModeBtn" onclick="toggleDarkMode()">🌙</button>
+    </nav>
+</header>
+
+<section class="cart-page">
+
+    <h1>Your Shopping Cart</h1>
+
+    <div id="cartItems" class="cart-container">
+        <!-- JavaScript will load cart items here -->
+    </div>
+
+    <div class="cart-summary">
+        <h2>Order Summary</h2>
+        <p>Total: <span id="cartTotal">₱0.00</span></p>
+        <button class="checkout-btn" onclick="checkout()">
+            Proceed to Checkout
+        </button>
+        <button class="clear-btn" onclick="clearCart()">
+            Clear Cart
+        </button>
+    </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     CHECKOUT / DELIVERY ADDRESS MODAL
+══════════════════════════════════════════ -->
+<div id="checkoutModal">
+    <div class="checkout-modal-box">
+        <button class="co-close-x" onclick="closeCheckoutModal()">✕</button>
+        <h2>🚚 Delivery Details</h2>
+        <p class="subtitle">Please provide your delivery address to complete your order.</p>
+        <p class="required-note">* All fields are required except Delivery Notes.</p>
+
+        <!-- Contact Info -->
+        <div class="co-section-title">Contact Information</div>
+        <div class="co-group">
+            <label>Full Name *</label>
+            <input type="text" id="co-fullname" placeholder="Juan dela Cruz">
+        </div>
+        <div class="co-group">
+            <label>Phone Number *</label>
+            <input type="tel" id="co-phone" placeholder="09XX XXX XXXX">
+        </div>
+
+        <!-- Address -->
+        <div class="co-section-title">Delivery Address</div>
+        <div class="co-group">
+            <label>House No. / Street / Building *</label>
+            <input type="text" id="co-street" placeholder="123 Rizal St.">
+        </div>
+        <div class="co-group">
+            <label>Barangay *</label>
+            <input type="text" id="co-barangay" placeholder="Barangay San Antonio">
+        </div>
+        <div class="co-row">
+            <div class="co-group">
+                <label>City / Municipality *</label>
+                <input type="text" id="co-city" placeholder="Quezon City">
+            </div>
+            <div class="co-group">
+                <label>Province *</label>
+                <input type="text" id="co-province" placeholder="Metro Manila">
+            </div>
+        </div>
+        <div class="co-group">
+            <label>ZIP Code *</label>
+            <input type="text" id="co-zip" placeholder="1100" style="max-width:140px;">
+        </div>
+
+        <!-- Notes -->
+        <div class="co-section-title">Additional Info</div>
+        <div class="co-group">
+            <label>Delivery Notes (optional)</label>
+            <textarea id="co-notes" rows="2" placeholder="e.g. Leave at the gate, call before delivery..."></textarea>
+        </div>
+
+        <div class="co-btn-row">
+            <button class="co-btn-cancel" onclick="closeCheckoutModal()">Cancel</button>
+            <button class="co-btn-confirm" onclick="confirmCheckout()">✅ Place Order</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 TechyHub. All Rights Reserved.</p>
+</footer>
+
+<button id="topBtn" onclick="scrollToTop()">↑</button>
+
+</body>
+</html>
