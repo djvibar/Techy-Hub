@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechyHub - Register</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #eef2f1;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .card {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      width: 760px;
+      min-height: 460px;
+      background: #fff;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    }
+
+    /* LEFT PANEL */
+    .panel-left {
+      background: #1a7a6a;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel-left::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 2px;
+    }
+
+    .placeholder-box {
+      flex: 1;
+      background: rgba(255,255,255,0.85);
+      border-radius: 2px;
+      margin: 36px 8px 24px;
+    }
+
+    .tagline {
+      color: #fff;
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: 0.3px;
+    }
+
+    /* RIGHT PANEL */
+    .panel-right {
+      padding: 32px 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 32px;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a7a6a;
+      letter-spacing: 2px;
+    }
+
+    .brand-info {
+      text-align: right;
+      font-size: 10px;
+      color: #aaa;
+      line-height: 1.6;
+    }
+
+    .panel-right h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 24px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 10px 12px;
+      border: none;
+      border-radius: 2px;
+      font-size: 13px;
+      color: #1a1a1a;
+      background: #eef0ef;
+      outline: none;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+
+    input:focus {
+      background: #fff;
+      box-shadow: 0 0 0 2px #1a7a6a;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 14px 0 22px;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      accent-color: #1a7a6a;
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+
+    .checkbox-row label {
+      font-size: 11px;
+      color: #999;
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 400;
+      cursor: pointer;
+      margin-bottom: 0;
+    }
+
+    .checkbox-row a {
+      color: #1a7a6a;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .actions-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-top: auto;
+    }
+
+    .btn-register {
+      padding: 10px 28px;
+      background: #1a7a6a;
+      color: #fff;
+      border: none;
+      border-radius: 2px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-register:hover {
+      background: #155f54;
+    }
+
+    .form-footer {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .form-footer a {
+      color: #1a7a6a;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 14px;
+      font-size: 11px;
+      color: #bbb;
+      text-decoration: none;
+    }
+
+    .back-link:hover { color: #1a7a6a; }
+
+    @media (max-width: 640px) {
+      .card { grid-template-columns: 1fr; width: 100%; }
+      .panel-left { min-height: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- LEFT PANEL -->
+  <div class="panel-left">
+    <div class="placeholder-box"></div>
+    <div class="tagline">Let's Make It<br>Happen Together!</div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="panel-right">
+    <div class="brand-row">
+      <div class="logo">CO.</div>
+      <div class="brand-info">
+        techyhub@email.com<br>
+        +63 900 000 0000
+      </div>
+    </div>
+
+    <h1>Create An Account</h1>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="Juan Dela Cruz">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="registerEmail">Email Address</label>
+        <input type="email" id="registerEmail" placeholder="juan@example.com">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="registerPassword">Password</label>
+        <input type="password" id="registerPassword" placeholder="••••••••">
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="••••••••">
+      </div>
+    </div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="terms">
+      <label for="terms">I agree to the <a href="#">Terms & Conditions</a></label>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn-register" onclick="registerUser()">Create Account</button>
+      <p class="form-footer">
+        Already have an account? <a href="login.html">Login Here</a>
+      </p>
+    </div>
+
+    <a class="back-link" href="index.html">← Back to Home</a>
+  </div>
+
+</div>
+
+<script src="js/script.js" defer></script>
+</body>
+</html>
